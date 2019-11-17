@@ -10,3 +10,9 @@ export const minus = val => {
     value: val,
   };
 };
+export const del = id => {
+  return {
+    type: 'delete',
+    key: id,
+  };
+};

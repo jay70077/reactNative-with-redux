@@ -17,10 +17,12 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
+import {del} from '../redux/action';
 
-const Home = (props) => {
- // const [value, setValue] = useState(0);
+const Home = props => {
+  // const [value, setValue] = useState(0);
 
   // function add() {
   //   setValue(value + 1);
@@ -29,6 +31,16 @@ const Home = (props) => {
   // function minus() {
   //   setValue(value - 1);
   // }
+  renderfun = (data) =>{
+    return (
+      <View>
+        {/* eslint-disable-next-line react-native/no-inline-styles */}
+        <Text style={{padding: 20}} onPress={() => props.delete(data.data.item.id)}>
+          {data.data.item.age}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.mainView}>
@@ -42,18 +54,25 @@ const Home = (props) => {
           <Text>minus</Text>
         </TouchableOpacity>
       </View>
+      <FlatList
+        data={props.history}
+        renderItem={data => this.renderfun({data})}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };
 const mapStatetoProps = state => {
   return {
     value: state.age,
+    history: state.history,
   };
 };
 const mapDispatchtoProps = dispatch => {
   return {
     add: () => dispatch(action.add(1)),
     minus: () => dispatch(action.minus(1)),
+    delete: key => dispatch(action.del(key)),
   };
 };
 const styles = StyleSheet.create({
